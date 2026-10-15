@@ -131,10 +131,10 @@ footer { border-top: 1.5px solid var(--line); padding-top: 24px; font-family: va
           <option value="LLRR">LLRR</option>
           <option value="RLR">RLR</option>
           <option value="RLLR">RLLR</option>
-          <option value="RRLLLRLLLLLL">RRLLLRLLLLLL</option>
         </select>
         <button class="btn small" id="toggle" type="button">Pause</button>
         <button class="btn small" id="restart" type="button">Restart</button>
+        <button class="btn small" id="random" type="button">Random rule</button>
         <span class="steps" id="steps">step 0</span>
       </div>
     </figure>
@@ -241,7 +241,7 @@ footer { border-top: 1.5px solid var(--line); padding-top: 24px; font-family: va
   <section id="about" class="about">
     <p class="label">⊢ about</p>
     <dl class="stack">
-      <dt>Bio</dt><dd><p>I study computer science and philosophy. The two meet in the work I enjoy most: logic, type theory, and formal verification, which I explore in Lean, Agda, EasyCrypt, and Pie, alongside building AI systems that have to work on imperfect real inputs.</p><p style="margin-top:12px">I speak English and Spanish natively and am learning Japanese. Outside of code, I collect vinyl, mostly classic trance, ambient, and Shibuya-kei. I am open to software engineering and research opportunities.</p></dd>
+      <dt>Bio</dt><dd><p>I study computer science and philosophy, and I'm most interested where they meet: logic! In particular, programming languages, formal methods, and type theory. I also like building systems, and I think the two go hand in hand: the more clearly I can reason about a program, the better I can build it.</p><p style="margin-top:12px">I speak English and Spanish natively and am learning Japanese. Outside of code, I collect vinyl, mostly classic trance, ambient, and Shibuya-kei. I am open to software engineering and research opportunities.</p></dd>
       <dt>Languages</dt><dd>Python, OCaml, Rust, C, Bash, Lean, Agda, EasyCrypt, Pie</dd>
       <dt>Tools &amp; cloud</dt><dd>Linux, Git, AWS, SQL, Flask, Twilio API, Strava API</dd>
       <dt>AI / ML</dt><dd>LangGraph, multi-agent systems, OCR, LLM fine-tuning and evaluation</dd>
@@ -349,6 +349,27 @@ footer { border-top: 1.5px solid var(--line); padding-top: 24px; font-family: va
 
   window.addEventListener('resize', fit);
   if (window.ResizeObserver) new ResizeObserver(fit).observe(canvas.parentNode);
+  // Random rule: a string of L/R turns (2 to 10 states) with at least one of each, added to the dropdown and run from step 0.
+  function randomRule() {
+    var r;
+    do {
+      var n = 2 + Math.floor(Math.random() * 9);
+      r = '';
+      for (var i = 0; i < n; i++) r += Math.random() < 0.5 ? 'L' : 'R';
+    } while (r.indexOf('L') < 0 || r.indexOf('R') < 0);
+    return r;
+  }
+  document.getElementById('random').addEventListener('click', function () {
+    var old = ruleSel.querySelector('option[data-random]');
+    if (old) old.remove();
+    var rule = randomRule();
+    var opt = document.createElement('option');
+    opt.value = rule; opt.textContent = 'random: ' + rule; opt.setAttribute('data-random', '1');
+    ruleSel.appendChild(opt);
+    ruleSel.value = rule;
+    reset();
+    setRunning(true);
+  });
   ruleSel.addEventListener('change', reset);
   restart.addEventListener('click', reset);
   toggle.addEventListener('click', function () { setRunning(!running); });
