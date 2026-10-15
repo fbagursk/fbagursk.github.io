@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Félix Bagurskas Rubio: projects, research on pure type systems, and experience.">
+<title>Félix Bagurskas Rubio</title>
+<style>body{margin:0}</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap">
+<style>
+/* Blend: the plain site's structure (white page, bold blue links that turn red, underlined h2, black rules, grey boxes) with the modern site's typography, spacing and colored ant. */
+:root {
+  --bg: #FFFFFF;
+  --fg: #11161D;
+  --muted: #566272;
+  --line: #11161D;
+  --soft: #D5DBE3;
+  --accent: #1647C8;
+  --hover: #D6291F;
+  --on-accent: #FFFFFF;
+  --box: #EEF1F5;
+  --tag-bg: #EEF1F5;
+  color-scheme: light;
+  --a0: #EEF1F5;  /* ant background; the blue gradient for the other states is built in the script from the rule length */
+  --font-body: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --font-head: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 17px; line-height: 1.6; padding: 0 clamp(16px, 4vw, 40px) 56px; }
+.wrap { max-width: 1080px; margin-inline: auto; }
+a { color: var(--accent); font-weight: 600; text-underline-offset: 3px; text-decoration-thickness: 1px; overflow-wrap: break-word; }
+a:hover { color: var(--hover); text-decoration-thickness: 2px; }
+a:focus-visible, button:focus-visible, select:focus-visible { outline: 2px solid var(--hover); outline-offset: 3px; }
+::selection { background: #C9D8FF; color: #11161D; }
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+p { margin: 0; }
+
+/* nav */
+.bar { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; padding-block: 20px; border-bottom: 1.5px solid var(--line); }
+.bar .id { font-family: var(--font-mono); font-size: 13px; color: var(--muted); }
+.bar nav { display: flex; flex-wrap: wrap; gap: 4px 20px; font-family: var(--font-mono); font-size: 13px; }
+.bar nav a { text-decoration: none; }
+
+/* hero */
+.hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: 40px 56px; align-items: center; padding-block: 52px 60px; }
+.eyebrow { font-family: var(--font-mono); font-size: 13px; color: var(--muted); margin-bottom: 16px; }
+h1 { font-size: clamp(40px, 6.4vw, 68px); line-height: 1.02; letter-spacing: -0.025em; font-weight: 700; }
+.lede { font-size: clamp(19px, 2.4vw, 23px); line-height: 1.45; margin-top: 22px; max-width: 34ch; font-weight: 600; }
+.sub { margin-top: 16px; color: var(--muted); max-width: 52ch; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 28px; align-items: center; }
+.btn { font-family: var(--font-mono); font-size: 14px; font-weight: 600; color: var(--accent); background: transparent; border: 0; padding: 0; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.btn:hover { color: var(--hover); }
+.btn.primary { color: var(--on-accent); background: var(--accent); padding: 8px 14px; text-decoration: none; border-radius: 2px; }
+.btn.primary:hover { color: var(--on-accent); background: var(--hover); }
+.btn.small { font-size: 12px; color: var(--fg); background: var(--box); border: 1px solid var(--soft); padding: 3px 9px; text-decoration: none; border-radius: 2px; }
+.btn.small:hover { color: var(--hover); border-color: var(--hover); }
+.mail { display: inline-flex; align-items: center; gap: 10px; flex-wrap: wrap; font-family: var(--font-mono); font-size: 14px; }
+.mail span.addr { user-select: all; font-weight: 600; }
+
+.ant { min-width: 0; margin: 0; }
+.ant canvas { display: block; box-sizing: content-box; max-width: 100%; image-rendering: pixelated; border: 1.5px solid var(--line); background: var(--a0); }
+.antbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 10px; font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+.antbar select { font: inherit; color: var(--fg); background: var(--box); border: 1px solid var(--soft); border-radius: 2px; padding: 3px 6px; }
+.antbar .steps { margin-left: auto; font-variant-numeric: tabular-nums; }
+
+/* sections */
+section { border-top: 1.5px solid var(--line); padding-block: 40px; }
+.label { font-family: var(--font-mono); font-size: 14px; font-weight: 600; color: var(--fg); margin-bottom: 28px; }
+.entry { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 8px 40px; padding-block: 0 36px; }
+.entry:last-child { padding-bottom: 0; }
+.meta { font-family: var(--font-mono); font-size: 13px; color: var(--muted); line-height: 1.55; padding-top: 6px; }
+.meta b { display: block; font-weight: 600; color: var(--fg); }
+.body { min-width: 0; }
+h2 { font-size: clamp(22px, 3vw, 28px); line-height: 1.2; letter-spacing: -0.015em; font-weight: 700; text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 5px; }
+.kicker { color: var(--muted); font-size: 15px; margin-top: 6px; }
+.body p { margin-top: 12px; max-width: 66ch; }
+.body ul { margin: 12px 0 0; padding-left: 1.2em; max-width: 66ch; }
+.body li { margin-top: 8px; }
+.body li::marker { color: var(--muted); }
+.body .tags { max-width: none; padding-left: 0; list-style: none; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; padding: 0; list-style: none; }
+.tags li { margin: 0; font-family: var(--font-mono); font-size: 12px; padding: 2px 8px; background: var(--tag-bg); border: 1px solid var(--soft); border-radius: 2px; color: var(--muted); }
+.links { display: flex; flex-wrap: wrap; gap: 6px 20px; margin-top: 14px; font-family: var(--font-mono); font-size: 13px; }
+.note { font-size: 15px; color: var(--muted); }
+.body .note { margin-top: 12px; background: var(--box); border-left: 3px solid var(--line); padding: 8px 12px; }
+
+.about p { max-width: 62ch; }
+.stack { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 10px 40px; margin: 0; }
+.stack dt { font-family: var(--font-mono); font-size: 13px; color: var(--muted); padding-top: 3px; }
+.stack dd { margin: 0; }
+footer { border-top: 1.5px solid var(--line); padding-top: 24px; font-family: var(--font-mono); font-size: 12px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
+
+@media (max-width: 820px) {
+  .hero { grid-template-columns: minmax(0, 1fr); padding-block: 36px 44px; }
+  .entry, .stack { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .meta { padding-top: 0; }
+  .meta b { display: inline; margin-right: 10px; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="bar">
+    <span class="id">fbagursk · Boston, MA</span>
+    <nav aria-label="Sections">
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#research">Research</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <div class="hero">
+    <div>
+      <h1>Félix Bagurskas Rubio</h1>
+      <p class="lede">Computer Science and Philosophy student at Boston University</p>
+      <p class="sub">// functional programmer · formal methods enthusiast · existentialist</p>
+    </div>
+
+    <figure class="ant" style="margin:0">
+      <canvas id="ant" width="420" height="420" role="img" aria-label="Langton's ant cellular automaton running live"></canvas>
+      <div class="antbar">
+        <label for="rule">Rule</label>
+        <select id="rule">
+          <option value="RL">RL (classic)</option>
+          <option value="LLRR">LLRR</option>
+          <option value="RLR">RLR</option>
+          <option value="RLLR">RLLR</option>
+          <option value="RRLLLRLLLLLL">RRLLLRLLLLLL</option>
+        </select>
+        <button class="btn small" id="toggle" type="button">Pause</button>
+        <button class="btn small" id="restart" type="button">Restart</button>
+        <span class="steps" id="steps">step 0</span>
+      </div>
+    </figure>
+  </div>
+
+  <section id="experience">
+    <p class="label">⊢ experience</p>
+
+    <article class="entry">
+      <div class="meta"><b>May – Aug 2025</b>Singapore</div>
+      <div class="body">
+        <h2>Artificial Intelligence Intern</h2>
+        <p class="kicker">Discovermarket Asia Pte. Ltd.</p>
+        <p>Co-designed the approach and the LangGraph agent graph for a multi-agent claims-processing system, a finalist among 200+ teams in the Zurich Insurance AI Hyperchallenge. Customers submit claims through a chat app, agents verify the documents and check the policy, and a human stays in the loop.</p>
+        <p>Built an OCR pipeline with image preprocessing and fine-tuned olmOCR and Qwen2-VL-7B-Instruct models.</p>
+      </div>
+    </article>
+
+    <article class="entry">
+      <div class="meta"><b>Feb 2025</b>Cambridge, MA</div>
+      <div class="body">
+        <h2>MIT iQuHACK 2025</h2>
+        <p class="kicker">2nd place, Alice &amp; Bob challenge</p>
+        <p>Cat qubits are a kind of quantum bit built to resist one common type of error, at the cost of a small increase in another. The project simulated how they behave on GPUs using the dynamiqs library, and used Wigner plots, which are pictures of a quantum state, to show how noise affects them and how tuning their parameters changes the results.</p>
+      </div>
+    </article>
+  </section>
+
+  <section id="projects">
+    <p class="label">⊢ projects</p>
+
+    <article class="entry">
+      <div class="meta"><b>Oct – Dec 2025</b>Boston, MA</div>
+      <div class="body">
+        <h2>Trailblazer</h2>
+        <p class="kicker">BostonHacks 2025 · team of four</p>
+        <p>A running game where university teams paint a map of Boston with their runs. Players sign up with a .edu email, import runs from Strava, and claim or take over territory in their school's color.</p>
+        <p>I built the backend API and the core logic that turns Strava GPS data into grid-quantized paths and generates the SVG territory overlays rendered on a React Leaflet map.</p>
+        <ul class="tags" aria-label="Technologies">
+          <li>Python</li><li>Django</li><li>Strava API</li><li>AWS EC2</li><li>SVG</li><li>React Leaflet</li>
+        </ul>
+        <div class="links">
+          <a href="https://www.youtube.com/watch?v=Qwl-SaJ3n84" target="_blank" rel="noopener">Demo video ↗</a>
+          <a href="https://devpost.com/software/trailblazer-r0dkaz" target="_blank" rel="noopener">Devpost ↗</a>
+          <a href="https://github.com/TemiKayas/running-bh-backend" target="_blank" rel="noopener">Backend repo ↗</a>
+          <a href="https://github.com/jaquevan/running-bh-frontend" target="_blank" rel="noopener">Frontend repo ↗</a>
+        </div>
+        <p class="note">The live deployment ran on AWS for a month and is offline now. Full team credits are on the Devpost page.</p>
+      </div>
+    </article>
+
+    <article class="entry">
+      <div class="meta"><b>Mar 2026</b>Boston, MA</div>
+      <div class="body">
+        <h2>Turing Machine Visualizer</h2>
+        <p class="kicker">Langton's ant and its relatives · personal project</p>
+        <p>A live-rendering simulator for Langton's ant-style Turing machines, written in OCaml with the Graphics library and mixing functional and imperative style. Window size, number of states and symbols, and batch size (pixels drawn per iteration) are configurable, and earlier runs can be replayed by importing their rules.</p>
+        <p>The animation at the top of this page is a browser version of the same idea.</p>
+        <ul class="tags" aria-label="Technologies"><li>OCaml</li><li>Graphics</li></ul>
+      </div>
+    </article>
+
+    <article class="entry">
+      <div class="meta"><b>Nov 2024</b>Boston, MA</div>
+      <div class="body">
+        <h2>DoseMate</h2>
+        <p class="kicker">BostonHacks 2024 · team of four</p>
+        <p>A proof-of-concept web app that tracks patients' medicine use. It detects missed, late, and overdosed doses, texts family members through Twilio WhatsApp, and reports non-adherence to clinicians.</p>
+        <p>I wrote the late-dose detection, designed the JSON data model that drives the app's state, and wrote the project documentation.</p>
+        <ul class="tags" aria-label="Technologies"><li>Python</li><li>Flask</li><li>Twilio</li><li>JavaScript</li></ul>
+        <div class="links">
+          <a href="https://www.youtube.com/watch?v=a7NRya5P64k" target="_blank" rel="noopener">Demo video ↗</a>
+          <a href="https://devpost.com/software/dosemate" target="_blank" rel="noopener">Devpost ↗</a>
+          <a href="https://github.com/MohnishSS/DoseMate-BHacks24" target="_blank" rel="noopener">Repo ↗</a>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <section id="research">
+    <p class="label">⊢ research</p>
+
+    <article class="entry">
+      <div class="meta"><b>May 2026 – present</b>Boston, MA</div>
+      <div class="body">
+        <h2>Sort Inference in Pure Type Systems</h2>
+        <p class="kicker">BU UROP Student Research Award · advised by Professor Nathan Mull</p>
+        <p>Pure type systems are a family of typed lambda calculi that generalizes the λ-cube. A standing question is which of them are non-normalizing, meaning some well-typed program never finishes evaluating. The best-known example is Girard's paradox in the system λU.</p>
+        <p>I developed a constraint-based variant of the typing rules, solved by unification, that derives the weakest system able to carry out a given derivation, along with a prototype that does the derivation automatically. Applied to Girard's paradox, it produced a non-normalizing system strictly weaker than the canonical λU<sup>−</sup>.</p>
+        <p class="note">Manuscript in preparation. I am presenting this work at the BU UROP Symposium in October 2026.</p>
+      </div>
+    </article>
+
+    <article class="entry">
+      <div class="meta"><b>Oct – Dec 2025</b>Boston, MA</div>
+      <div class="body">
+        <h2>Rust and Modalities Survey Paper</h2>
+        <p class="kicker">Course project · CS 392: Rust, in Theory and in Practice</p>
+        <p>A survey of the connections between modal logic, linear logic, and Rust's ownership and borrowing system. I proposed a dual Kripke model framework for reasoning formally about Rust memory states and program execution, and identified open questions on lifetimes and unsafe Rust for future formalization.</p>
+      </div>
+    </article>
+  </section>
+
+  <section id="about" class="about">
+    <p class="label">⊢ about</p>
+    <dl class="stack">
+      <dt>Bio</dt><dd><p>I study computer science and philosophy. The two meet in the work I enjoy most: logic, type theory, and formal verification, which I explore in Lean, Agda, EasyCrypt, and Pie, alongside building AI systems that have to work on imperfect real inputs.</p><p style="margin-top:12px">I speak English and Spanish natively and am learning Japanese. Outside of code, I collect vinyl, mostly classic trance, ambient, and Shibuya-kei. I am open to software engineering and research opportunities.</p></dd>
+      <dt>Languages</dt><dd>Python, OCaml, Rust, C, Bash, Lean, Agda, EasyCrypt, Pie</dd>
+      <dt>Tools &amp; cloud</dt><dd>Linux, Git, AWS, SQL, Flask, Twilio API, Strava API</dd>
+      <dt>AI / ML</dt><dd>LangGraph, multi-agent systems, OCR, LLM fine-tuning and evaluation</dd>
+      <dt>Reading now</dt><dd><i>The Tatami Galaxy</i> by Tomihiko Morimi</dd>
+      <dt>Listening now</dt><dd><i>友達がいました</i> by Trooper Salute</dd>
+    </dl>
+  </section>
+
+  <section id="contact">
+    <p class="label">⊢ contact</p>
+    <div class="actions" style="margin-top:0">
+      <span class="mail"><span class="addr" id="addr">fbagursk@bu.edu</span><button class="btn small" id="copy" type="button">Copy email</button><span id="copied" class="note" role="status" aria-live="polite"></span></span>
+    </div>
+    <div class="actions">
+      <a class="btn" href="https://github.com/fbagursk" target="_blank" rel="noopener">GitHub ↗</a>
+      <a class="btn" href="https://linkedin.com/in/felixbagurskasrubio" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2026 Félix Bagurskas Rubio</span>
+    <span>Boston, MA</span>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var W = 140, H = 140, S = 3;  // S (px per cell) is chosen in fit() so the canvas is an exact multiple of the grid
+  var canvas = document.getElementById('ant');
+  var ctx = canvas.getContext('2d');
+  var ruleSel = document.getElementById('rule');
+  var toggle = document.getElementById('toggle');
+  var restart = document.getElementById('restart');
+  var stepsEl = document.getElementById('steps');
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var grid, ax, ay, dir, steps, rule, running, palette;
+  var DX = [0, 1, 0, -1], DY = [-1, 0, 1, 0];
+
+  function lerp(a, b, t) { return Math.round(a + (b - a) * t); }
+  function readPalette() {
+    var cs = getComputedStyle(document.documentElement);
+    var n = rule.length;
+    palette = [cs.getPropertyValue('--a0').trim() || '#EEF1F5'];
+    // states 1..n-1: one blue gradient from light to deep navy (a single strong blue when there are only two states)
+    var L = [190, 208, 250], D = [22, 71, 200];  // light tint of the site blue up to #1647C8 itself
+    for (var i = 1; i < n; i++) {
+      if (n === 2) { palette.push('#1647C8'); continue; }
+      var t = (i - 1) / (n - 2);
+      palette.push('rgb(' + lerp(L[0], D[0], t) + ',' + lerp(L[1], D[1], t) + ',' + lerp(L[2], D[2], t) + ')');
+    }
+  }
+  function fit() {
+    var avail = canvas.parentNode.clientWidth - 3;
+    var next = Math.max(2, Math.min(5, Math.floor(avail / W)));
+    if (next === S && canvas.width === W * S) return;
+    S = next;
+    canvas.width = canvas.height = W * S;
+    canvas.style.width = canvas.style.height = (W * S) + 'px';
+    if (grid) drawAll();
+  }
+  function drawAll() {
+    ctx.fillStyle = palette[0];
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    for (var y = 0; y < H; y++) for (var x = 0; x < W; x++) {
+      var c = grid[y * W + x];
+      if (c) { ctx.fillStyle = palette[c]; ctx.fillRect(x * S, y * S, S, S); }
+    }
+  }
+  function advance(n, draw) {
+    var len = rule.length;
+    for (var k = 0; k < n; k++) {
+      var i = ay * W + ax, c = grid[i];
+      dir = (dir + (rule.charAt(c) === 'R' ? 1 : 3)) & 3;
+      c = (c + 1) % len;
+      grid[i] = c;
+      if (draw) { ctx.fillStyle = palette[c]; ctx.fillRect(ax * S, ay * S, S, S); }
+      ax = (ax + DX[dir] + W) % W;  // the world wraps around at the edges
+      ay = (ay + DY[dir] + H) % H;
+    }
+    steps += n;
+  }
+  function reset() {
+    fit();
+    rule = ruleSel.value;
+    grid = new Uint8Array(W * H);
+    ax = W >> 1; ay = H >> 1; dir = 0; steps = 0;
+    readPalette();
+    // Animate from step 0; only reduced-motion viewers get a pre-run so the still image isn't blank.
+    if (reduce) advance(rule === 'RL' ? 11500 : 9000, false);
+    drawAll();
+    showSteps();
+  }
+  function showSteps() { stepsEl.textContent = 'step ' + steps.toLocaleString('en-US'); }
+
+  var last = 0;
+  function frame(t) {
+    if (running) {
+      advance(30, true);
+      if (t - last > 200) { showSteps(); last = t; }
+    }
+    requestAnimationFrame(frame);
+  }
+  function setRunning(v) { running = v; toggle.textContent = v ? 'Pause' : 'Play'; }
+
+  window.addEventListener('resize', fit);
+  if (window.ResizeObserver) new ResizeObserver(fit).observe(canvas.parentNode);
+  ruleSel.addEventListener('change', reset);
+  restart.addEventListener('click', reset);
+  toggle.addEventListener('click', function () { setRunning(!running); });
+
+  function recolor() { readPalette(); drawAll(); }
+  if (window.matchMedia) {
+    var mq = window.matchMedia('(prefers-color-scheme: dark)');
+    if (mq.addEventListener) mq.addEventListener('change', recolor);
+  }
+  new MutationObserver(recolor).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+  reset();
+  setRunning(!reduce);
+  requestAnimationFrame(frame);
+
+  // copy email
+  var copyBtn = document.getElementById('copy');
+  var copied = document.getElementById('copied');
+  copyBtn.addEventListener('click', function () {
+    var text = document.getElementById('addr').textContent;
+    function fallback() {
+      var r = document.createRange();
+      r.selectNodeContents(document.getElementById('addr'));
+      var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+      copied.textContent = 'Selected. Press copy.';
+    }
+    try {
+      navigator.clipboard.writeText(text).then(function () { copied.textContent = 'Copied'; }, fallback);
+    } catch (e) { fallback(); }
+  });
+})();
+</script>
+</body>
+</html>
